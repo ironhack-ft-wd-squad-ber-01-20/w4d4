@@ -11,11 +11,42 @@ mongoose.connect("mongodb://localhost:27017/db-example", () => {
 
 const catSchema = new mongoose.Schema({
   name: String,
-  age: Number,
-  address: Object
+  age: {
+    type: Number,
+    min: 0,
+    max: 15
+  },
+  address: Object,
+  hungry: Boolean
 });
 
 const Cat = mongoose.model("Cat", catSchema);
+
+/* // Cat.updateOne(query, changes) -> will update the first document matching the given query and merge the changes onto the fields of that document
+Cat.updateOne({ age: 9 }, { name: "Garfield II", hungry: true })
+  .then(result => {
+    console.log(result);
+  })
+  .catch(err => {
+    console.log(err);
+  }); */
+
+/* // Cat.updateMany(query, changes) -> updates all documents matching the given query and apply the changes to these documents
+Cat.updateMany({ age: 9 }, { age: 18, hungry: true })
+  .then(result => {
+    console.log(result);
+  })
+  .catch(err => {
+    console.log(err);
+  }); */
+
+// Cat.deleteOne({ hungry: true }).then(result => {
+//   console.log(result);
+// });
+
+// Cat.deleteMany({ name: "Foo" }).then(result => {
+//   console.log(result);
+// });
 
 // Cat.create({ name: "Bar", hungry: true }).then(created => {
 //   console.log(created);
@@ -81,7 +112,9 @@ const userSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 16,
     required: true,
-    set: str => str.toLowerCase(),
+    set: str => {
+      return str.toLowerCase();
+    }, // sets the value for the `username` field to the value returned by the set function
     validate: {
       validator: str => {
         if (/^[a-zA-Z0-9]*$/.test(str)) {
@@ -96,10 +129,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: str => {
-        if (!str.startsWith("http") && !str.startsWith("www")) {
-          return false;
+        if (str.startsWith("http") || str.startsWith("www")) {
+          return true;
         }
-        return true;
+        return false;
       },
       message: "The website should start with http or www"
     }
