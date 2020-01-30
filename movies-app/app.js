@@ -8,14 +8,11 @@ app.use(express.static("public"));
 
 hbs.registerPartials(__dirname + "/views/partials");
 
-hbs.registerHelper("stringify", data => JSON.stringify(data));
-
 app.get("/", (request, response) => {
   // console.log([{ a: moviesJSON }]) ❌;
   // response.send([{ a: moviesJSON }]) ✅ only for debugging;
   response.render("index.hbs", {
-    moviesList: moviesJSON,
-    stringified: JSON.stringify(moviesJSON)
+    moviesList: moviesJSON
   });
 });
 
