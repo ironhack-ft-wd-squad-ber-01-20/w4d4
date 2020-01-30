@@ -1,0 +1,18 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.movies-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.movie-card {
+  display: flex;
+  flex: 1;
+}
+
+.movie-card,
+.movie-details {
+  padding: 10px;
+}
